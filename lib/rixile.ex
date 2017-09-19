@@ -23,7 +23,7 @@ defmodule Rixile do
 
   def call(conn, _opts) do
     IO.puts "saying hello!"
-    Plug.Conn.send_resp(conn, 200, "Hello, world!")
+    conn |> Plug.Conn.put_resp_header("Server", "Plug") |> Plug.Conn.send_resp(200, "Hello, world!")
   end
-  
+
 end
