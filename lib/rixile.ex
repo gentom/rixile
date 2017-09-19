@@ -38,8 +38,10 @@ defmodule Rixile do
     conn |> Plug.Conn.send_resp(404, "Couldn't find that page, sorry!")
   end
 
+  require EEx # you have to require EEx before using its macros outside of functions
+  EEx.function_from_file :defp, :template_show_user, "templates/show_user.eex", [:user_id]
   def route("GET", ["users", user_id], conn) do
-    page_contents = EEx.eval_file("templates/show_user.eex", [user_id: user_id])
+    page_contents = template_show_user(user_id)
     conn |> Plug.Conn.put_resp_content_type("text/html") |> Plug.Conn.send_resp(200, page_contents)
   end
   
@@ -54,7 +56,7 @@ defmodule Rixile do
     #conn2 = Plug.Conn.put_resp_header(conn, "Server", "Plug")
     #Plug.Conn.send_resp(conn2, 200, "Hello, world!")
   end
-
+  """
   def call(conn, _opts) do
     route(conn.method, conn.path_info, conn)
   end
@@ -73,5 +75,5 @@ defmodule Rixile do
     # this route is called if no other routes match
     conn |> Plug.Conn.send_resp(404, "Couldn't find that page, sorry!")
   end
-  
+  """
 end
