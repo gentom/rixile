@@ -1,5 +1,5 @@
 defmodule Rixile do
-  use Router
+  use Rixile.Router
 
   def route("GET", ["users", user_id], conn) do
     conn |> Plug.Conn.send_resp(200, "You requested user #{user_id}")
